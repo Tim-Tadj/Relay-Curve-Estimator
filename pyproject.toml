@@ -1,0 +1,10 @@
+[project]
+name = "relay-curve-estimator"
+version = "0.1.0"
+description = "Relay Curve Estimator"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cx-freeze>=8.4.0",
+    "pyside6>=6.9.2",
+]

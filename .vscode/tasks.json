@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build CurveEstimator with cx_Freeze",
+			"type": "shell",
+			"command": "uv run python .\\setup.py build",
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Rebuild CurveEstimator with refined excludes",
+			"type": "shell",
+			"command": "uv run python .\\setup.py build",
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build MSI with cx_Freeze",
+			"type": "shell",
+			"command": "uv run python .\\setup.py bdist_msi",
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		}
+	]
+}
