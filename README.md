@@ -1,94 +1,75 @@
-# Relay Curve Estimator (Native Rust)
+# Relay Curve Estimator
 
-A high-performance, standalone native Rust GUI application for estimating, analyzing, and plotting protection relay Time-Current Characteristic (TCC) curves.
+A standalone native desktop application for estimating, analyzing, and plotting protection relay Time-Current Characteristic (TCC) curves according to IEC 60255 and IEEE C37.112 standards.
 
-Built with **eframe**, **egui**, and **egui_plot** with **zero web dependencies**, producing a fast, single native Windows binary with hardware-accelerated graphing.
+Built in 100% Rust with hardware-accelerated graphing and an Excel-grade interactive spreadsheet test point grid. Zero web runtimes or external dependencies required.
 
-![Relay Curve Estimator](assets/icon.png)
+![Relay Curve Estimator Screenshot](assets/screenshot.png)
 
 ---
 
-## Features
+## Quick Start / Download
 
-- **Pure Native Rust & Zero Web Dependencies**: Instant startup, minimal memory footprint, and a single standalone executable without Node.js, Electron, or WebViews.
-- **Interactive Log-Log & Linear TCC Graph**:
-  - Electrical engineering industry-standard Log-Log scale (Log10 Current vs Log10 Time).
-  - Smooth fitted curve rendering, candidate comparison overlays, and measured point markers.
-  - Visual residual error indicators and real-time hover crosshair readout.
-  - Panning, zooming, auto-fit view, and grid customization.
-- **Multi-Standard Curve Engine**:
-  - **IEC 60255**: Standard Inverse (SI), Very Inverse (VI), Extremely Inverse (EI), Long-Time Inverse (LTI), Normal Inverse (NI).
+### For Windows Users (Pre-built Binaries)
+
+No installation or runtime dependencies required:
+
+1. Head to the **[Latest GitHub Release](https://github.com/Tim-Tadj/Relay-Curve-Estimator/releases/latest)**.
+2. Download **`relay-curve-estimator-v0.2.0-windows-x64.zip`** (or the standalone `relay-curve-estimator.exe`).
+3. Extract the `.zip` archive to any folder on your computer.
+4. Double-click **`relay-curve-estimator.exe`** to launch immediately.
+
+---
+
+## User Guide & Features
+
+### 1. Test Points & Excel Spreadsheet Grid
+- **Spreadsheet Data Entry**: Full 2D cell grid with row numbers and in-cell editing.
+- **Copy & Paste with Excel**: Copy tabular data directly from Microsoft Excel, Google Sheets, or CSV files and press `Ctrl+V` to populate the grid.
+- **Range Selection & Drag**: Click and drag across any cell block or use `Shift + Arrow Keys` to select rectangular ranges.
+- **Keyboard Navigation**: Use `Arrow Keys`, `Enter`, `Shift+Enter`, `Tab`, and `Shift+Tab` to navigate and auto-expand rows.
+- **Clipboard Shortcuts**: Standard `Ctrl+C` (Copy), `Ctrl+X` (Cut), `Ctrl+V` (Paste), `Delete` (Clear selection), and `Ctrl+A` (Select all).
+
+### 2. Inverse Time-Current Characteristic (TCC) Graphing
+- **Interactive Log-Log Graph**: Plots fault current (A) against operating trip time (s) on standard logarithmic scales.
+- **Accurate Physical Unit Readout**: Hovering over curve lines and measured test points displays exact electrical units (Amperes and Seconds).
+- **Candidate Comparison**: Overlays runner-up curve candidates for visual margin analysis.
+- **Plot Controls**: Real-time panning, zooming, axis reset, and linear/log toggle.
+
+### 3. Protection Standards & Curve Fitting Engine
+- **Microsecond Least-Squares Estimation**: Fits measured test points against all standard inverse time curves simultaneously.
+- **Supported Standards**:
+  - **IEC 60255**: Standard Inverse (SI), Very Inverse (VI), Extremely Inverse (EI), Long-Time Inverse (LTI).
   - **IEEE C37.112**: Moderately Inverse (MI), Very Inverse (VI), Extremely Inverse (EI), Short-Time Inverse (SI), Long-Time Inverse (LI), Ultra Inverse (UI).
-  - Multi-curve candidate ranking by Root Mean Square Error (RMSE), Mean Square Error (MSE), and Fit Quality percentage.
-- **Excel-Grade Spreadsheet Test Point Grid**:
-  - Full 2D rectangular range selection with click-and-drag.
-  - Keyboard navigation (Arrow keys, Enter, Shift+Enter, Tab, Shift+Tab).
-  - In-cell direct numeric typing, F2, and double-click editing.
-  - Seamless Excel / Google Sheets TSV Copy (`Ctrl+C`), Cut (`Ctrl+X`), Paste (`Ctrl+V`), and Select All (`Ctrl+A`).
-- **Forward Trip Simulator & Dial Tuner**:
-  - Calculate trip times for any arbitrary fault current or multiple of pickup.
-  - Interactive Time Dial / TMS adjustment slider with real-time curve recalculation.
-- **Export Tools**:
-  - One-click copy formatted estimation reports to the clipboard.
-  - Export test point verifications and curve parameters to standard CSV format.
-- **Built-in Presets & Formula Reference**:
-  - Standard industry test cases (Feeder overcurrent, Transformer inrush, Motor thermal protection).
-  - Complete mathematical formula reference and parameter lookup.
+- **Comprehensive Quality Metrics**: Evaluates Optimal Time Dial (TMS / TD), Root Mean Square Error (RMSE), Mean Square Error (MSE), Maximum Relative Error (%), and Fit Quality Score (0–100%).
+
+### 4. Trip Simulator & Formula Reference
+- **Forward Operating Time Calculator**: Calculate expected clearing times for arbitrary fault currents and interactive time dial adjustments.
+- **LaTeX Mathematical Formulas**: High-precision vector-rendered equation cards for IEC 60255 and IEEE C37.112 standards.
+- **Export Capabilities**: One-click clipboard summary export and standard CSV export.
 
 ---
 
-## Getting Started
+## Supported Curve Standards & Equations
 
-### Prerequisites
-
-- [Rust](https://www.rust-lang.org/) (1.80+ or latest stable)
-- Cargo
-
-### Running the Application
-
-```bash
-cargo run --release
-```
-
-### Running the Test Suite
-
-```bash
-cargo test
-```
-
-### Building Standalone Release Binary
-
-```bash
-cargo build --release
-```
-
-The optimized standalone binary will be generated at:
-```
-target/release/relay-curve-estimator.exe
-```
-
----
-
-## Supported Relay Curve Standards
-
-### IEC 60255
+### IEC 60255 Standard
 
 Operating time formula:
-$$\large t = \frac{k \times \text{TMS}}{(I / I_s)^\alpha - 1}$$
+$$\large t = \frac{k \cdot \text{TMS}}{(I / I_s)^\alpha - 1}$$
 
 | Curve Name | Constant ($k$) | Exponent ($\alpha$) | Common Application |
 | :--- | :---: | :---: | :--- |
 | **Standard Inverse (SI)** | 0.14 | 0.02 | General distribution feeders |
-| **Very Inverse (VI)** | 13.50 | 1.00 | Feeders with fault current drop along length |
+| **Very Inverse (VI)** | 13.50 | 1.00 | Feeders with substantial fault current drop |
 | **Extremely Inverse (EI)** | 80.00 | 2.00 | Transformer inrush & fuse coordination |
 | **Long-Time Inverse (LTI)** | 120.00 | 1.00 | Motor thermal & overload protection |
 
 ---
 
-### IEEE C37.112
+### IEEE C37.112 Standard
 
 Operating time formula:
-$$\large t = \text{TD} \times \left( \frac{A}{(I / I_s)^p - 1} + B \right)$$
+$$\large t = \text{TD} \cdot \left( \frac{A}{(I / I_s)^p - 1} + B \right)$$
 
 | Curve Name | $A$ | $B$ | $p$ | Common Application |
 | :--- | :---: | :---: | :---: | :--- |
@@ -101,27 +82,30 @@ $$\large t = \text{TD} \times \left( \frac{A}{(I / I_s)^p - 1} + B \right)$$
 
 ---
 
-## Project Structure
+## Building from Source
 
+If you want to build or contribute to the application from source:
+
+### Prerequisites
+- [Rust & Cargo](https://www.rust-lang.org/tools/install) (1.80+ or latest stable)
+
+### Build & Run
+```bash
+# Clone repository
+git clone https://github.com/Tim-Tadj/Relay-Curve-Estimator.git
+cd Relay-Curve-Estimator
+
+# Run tests
+cargo test
+
+# Run in release mode
+cargo run --release
+
+# Build standalone release executable
+cargo build --release
 ```
-.
-├── assets/
-│   └── icon.png               # Application icon
-├── src/
-│   ├── main.rs                # Entry point, viewport & native options
-│   ├── lib.rs                 # Library exports
-│   ├── app.rs                 # Main GUI state, tabs, sidebar & layout
-│   ├── curves.rs              # Curve definitions, parameters & formulas
-│   ├── estimator.rs           # Statistical curve fitting & RMSE engine
-│   ├── plot_view.rs           # Interactive egui_plot TCC graphing
-│   ├── presets.rs             # Built-in industry standard test cases
-│   ├── spreadsheet.rs         # Excel-grade spreadsheet grid engine
-│   └── theme.rs               # Dark mode color palette & card frames
-├── tests/
-│   └── estimator_tests.rs     # Formula & estimation integration tests
-├── Cargo.toml                 # Cargo dependencies & release profiles
-└── README.md                  # Project documentation
-```
+
+The optimized standalone binary will be placed at `target/release/relay-curve-estimator.exe`.
 
 ---
 

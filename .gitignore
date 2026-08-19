@@ -3,18 +3,12 @@
 **/*.rs.bk
 Cargo.lock
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-build/
-dist/
+# Archive files
+*.zip
 
 # IDE & OS
 .vscode/
 .idea/
 *.swp
 *.bak
-*.zip
 Thumbs.db
