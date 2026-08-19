@@ -1,8 +1,20 @@
+# Rust
+/target
+**/*.rs.bk
+Cargo.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
 build/
 dist/
-__pycache__/
-*.pyc
 
-.venv/
-
-uv.lock
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.bak
+*.zip
+Thumbs.db
